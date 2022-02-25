@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>无标题文档</title>
+
+<script>
+    $(function (){
+        //当页面刚加载的时候，我就要发送一个ajax请求，向后台询问"我收藏了哪些文章"
+        $.post('./favor_str.php',null, function (res){
+            //根据返回的字符串，进行收藏div的渲染
+            let titles = $('#article').children('a');
+            let arr = res.split(';');
+            arr.pop();//因为用数据库用分号隔开的，所以最后会多个分号，转换的数组最后一项是空的，要把最后的空字符串去掉
+            let inner = '';
+            for(let i = 0; i < arr.length; i++){
+                inner += '<li>'+arr[i]+'</li>';
+            }
+            $('#list').html(inner);
+            //循环所有的按钮
+            for(let i = 0; i < titles.length; i++){
+                let $titleText = $(titles[i]).text();
+                let $btn = $(titles[i]).next();
+                //如果我所点的这个按钮对应的文章标题在ajax收到的结果字符串里是存在的，就显示"已收藏"
+                if(res.indexOf($titleText)!=-1){
+                    $btn.val('已收藏');
+                }
+                else{//否则显示"收藏"
+                    $btn.val('收藏');
+                }
+                //为每个按钮绑定点击事件                
+                $btn.click(function (){
+                    if($btn.val()=='已收藏'){
+                        //如果已收藏，则弹框并终止点击事件函数
+                        alert('你已收藏过！')
+                        return;                         
+                    }
+                    //走到这里说明没有收藏过，那我就要发送ajax请求，在user_favorite字段里存储title
+                    $.post('./favorite.php',{
+                        'title': $titleText 
+                    },function (res){
+                        //根据返回的结果，即时地渲染进收藏的div里，一个个append
+                        //注：这里的res和上面的res是两个ajax请求的结果，是完全不相同的
+                        let arr = res.split(';');
+                        arr.pop();//把最后的空字符串去掉
+                        $btn.val('已收藏');
+                        let $newLi = $('<li>');
+                        $newLi.html(arr[arr.length - 1]);
+                        $('#list').append($newLi);                        
+                    })          
+                })
+            }            
+        })
+    })
+</script>
+</head>
+
+<body>
+
+    <div id="article">
+        <a href="javasript:;">我是文章1</a><input type="button" value="收藏"><br>
+        <a href="javasript:;">我是文章2</a><input type="button" value="收藏"><br>
+        <a href="javasript:;">我是文章3</a><input type="button" value="收藏"><br>
+        <a href="javasript:;">我是文章4</a><input type="button" value="收藏"><br>
+        <a href="javasript:;">我是文章5</a><input type="button" value="收藏"><br>
+    </div>
+    <div id="favorite">
+        <h1>您收藏的文章有：</h1>
+        <ul id="list"></ul>
+    </div>
+</body>
+
+</html>
