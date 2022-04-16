@@ -1,0 +1,36 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>會員註冊</title>
+</head>
+<style type="text/css">
+#register{	margin: 0 auto;
+			width: 300px;
+			margin-top: 300px;
+			border-radius: 15px;
+			border: 2px solid #555555;
+			padding: 15px;
+			color: white;
+			}
+body
+{background-image: linear-gradient( to bottom right , pink, blue);}
+#list{
+			margin-left: 28px;
+		}
+</style>
+<body>
+<div id=register>
+    <form method="post" action="register.php" >
+    帳  戶：
+    <input type="text" name="username" id=list><br/><br/>
+    密  碼：
+    <input type="password" name="password" id=list><br/><br/>
+    密碼確認：
+    <input type="password" name="password2"><br/><br/>
+	暱  稱：
+    <input type="text" name="name" id=list><br/><br/>
+    <input type="submit" value="註冊" name="sub">
+	</form>
+</div>
+</body>
+</html>
