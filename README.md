@@ -1,2 +1,2 @@
 # Find desirable electrical and plumbing store
- Find desirable electrical and plumbing store using front end skills, php and mysql.
+&nbsp;&nbsp;&nbsp;&nbsp;The technique about the project mainly uses front end skills, php and mysql.
